@@ -6,14 +6,14 @@ import (
 	"testing"
 )
 
-func TestDepParser_Default(t *testing.T) {
+func TestEmotion_Default(t *testing.T) {
 	err := aip.Init(os.Getenv("AIP_APPKEY"), os.Getenv("AIP_APPSECRET"))
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	var m CommentTag
-	resp, err := m.Default("今天天气怎么样", MODE_WEB)
+	var m Emotion
+	resp, err := m.Default("本来今天高高兴兴", SCENE_TALK)
 	if err != nil {
 		t.Error(err)
 	}

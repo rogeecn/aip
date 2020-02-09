@@ -3,19 +3,11 @@ package aip
 import (
 	"fmt"
 	"github.com/parnurzeal/gorequest"
-	"github.com/rogeecn/aip/modules/nlp"
 	"github.com/sirupsen/logrus"
 	"net/url"
 )
 
 var keystone *Keystone
-
-var NlpDepparser = nlp.DepParser{}
-var NlpDnn = nlp.Dnn{}
-var NlpLexer = nlp.Lexer{}
-var NlpSimnet = nlp.Simnet{}
-var NlpWordEmbSim = nlp.WordEmbSim{}
-var NlpWordEmbVec = nlp.WordEmbVec{}
 
 func Init(appKey, appSecret string) error {
 	logrus.SetLevel(logrus.DebugLevel)

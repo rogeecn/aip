@@ -40,7 +40,7 @@ func main(){
   if err != nil {
     log.Fatal("init baidu aip client failed!")
   }
-  api.NlpLexer.Default("百度是一家高科技公司")
+  nlp.Lexer{}.Default("百度是一家高科技公司")
 }
 ```
 

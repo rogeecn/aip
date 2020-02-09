@@ -6,14 +6,16 @@ import (
 	"testing"
 )
 
-func TestDepParser_Default(t *testing.T) {
+func TestEcnet_Default(t *testing.T) {
 	err := aip.Init(os.Getenv("AIP_APPKEY"), os.Getenv("AIP_APPSECRET"))
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	var m CommentTag
-	resp, err := m.Default("今天天气怎么样", MODE_WEB)
+	text := "百度是一家人工只能公司"
+
+	var m Ecnet
+	resp, err := m.Default(text)
 	if err != nil {
 		t.Error(err)
 	}

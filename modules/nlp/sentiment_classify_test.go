@@ -6,14 +6,14 @@ import (
 	"testing"
 )
 
-func TestDepParser_Default(t *testing.T) {
+func TestSentimentClassify_Default(t *testing.T) {
 	err := aip.Init(os.Getenv("AIP_APPKEY"), os.Getenv("AIP_APPSECRET"))
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	var m CommentTag
-	resp, err := m.Default("今天天气怎么样", MODE_WEB)
+	var m SentimentClassify
+	resp, err := m.Default("苹果是一家伟大的公司")
 	if err != nil {
 		t.Error(err)
 	}
