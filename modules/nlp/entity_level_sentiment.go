@@ -4,6 +4,7 @@
 package nlp
 
 import (
+	"github.com/juju/errors"
 	"github.com/rogeecn/aip"
 	"github.com/rogeecn/aip/modules"
 	"github.com/rogeecn/aip/utils"
@@ -46,13 +47,17 @@ func (m EntityLevelSentiment) Default(content string) (EntityLevelSentimentRespo
 	body := utils.MustJson(EntityLevelSentimentBody{content})
 	logrus.Debugf("[entity_level_sentiment] %s", body)
 
-	iresp, err := utils.CommonResponse(aip.Post(entity_level_sentiment).Send(string(body)), resp)
-	if err != nil {
-		return resp, err
+	_, respBody, errs := aip.Post(entity_level_sentiment).Send(string(body)).EndStruct(&resp)
+	if len(errs) > 0 {
+		return resp, errs[0]
+	}
+	logrus.Debugf("response body: %s", respBody)
+
+	if resp.ErrorCode > 0 {
+		return resp, errors.Errorf(resp.ErrorMsg)
 	}
 
-	finalResp, _ := iresp.(EntityLevelSentimentResponse)
-	return finalResp, err
+	return resp, nil
 }
 
 // 实体库新增接口
@@ -72,13 +77,17 @@ func (m EntityLevelSentiment) Add(repository string, entities []string) (EntityL
 	body := utils.MustJson(EntityLevelSentimentAddBody{repository, entities})
 	logrus.Debugf("[entity_level_sentiment_add] %s", body)
 
-	iresp, err := utils.CommonResponse(aip.Post(entity_level_sentiment_add).Send(string(body)), resp)
-	if err != nil {
-		return resp, err
+	_, respBody, errs := aip.Post(entity_level_sentiment_add).Send(string(body)).EndStruct(&resp)
+	if len(errs) > 0 {
+		return resp, errs[0]
+	}
+	logrus.Debugf("response body: %s", respBody)
+
+	if resp.ErrorCode > 0 {
+		return resp, errors.Errorf(resp.ErrorMsg)
 	}
 
-	finalResp, _ := iresp.(EntityLevelSentimentAddResponse)
-	return finalResp, err
+	return resp, nil
 }
 
 // 实体库新增接口
@@ -98,13 +107,17 @@ func (m EntityLevelSentiment) List(repository string) (EntityLevelSentimentListR
 	body := utils.MustJson(EntityLevelSentimentListBody{repository})
 	logrus.Debugf("[entity_level_sentiment_list] %s", body)
 
-	iresp, err := utils.CommonResponse(aip.Post(entity_level_sentiment_list).Send(string(body)), resp)
-	if err != nil {
-		return resp, err
+	_, respBody, errs := aip.Post(entity_level_sentiment_list).Send(string(body)).EndStruct(&resp)
+	if len(errs) > 0 {
+		return resp, errs[0]
+	}
+	logrus.Debugf("response body: %s", respBody)
+
+	if resp.ErrorCode > 0 {
+		return resp, errors.Errorf(resp.ErrorMsg)
 	}
 
-	finalResp, _ := iresp.(EntityLevelSentimentListResponse)
-	return finalResp, err
+	return resp, nil
 }
 
 // 实体库删除接口请求说明
@@ -121,15 +134,19 @@ func (m EntityLevelSentiment) DeleteRepo(repository []string) (EntityLevelSentim
 	var resp EntityLevelSentimentDeleteRepoResponse
 
 	body := utils.MustJson(EntityLevelSentimentDeleteRepoBody{repository})
-	logrus.Debugf("[entity_level_sentiment_list] %s", body)
+	logrus.Debugf("[entity_level_sentiment_delete_repo] %s", body)
 
-	iresp, err := utils.CommonResponse(aip.Post(entity_level_sentiment_delete_repo).Send(string(body)), resp)
-	if err != nil {
-		return resp, err
+	_, respBody, errs := aip.Post(entity_level_sentiment_delete_repo).Send(string(body)).EndStruct(&resp)
+	if len(errs) > 0 {
+		return resp, errs[0]
+	}
+	logrus.Debugf("response body: %s", respBody)
+
+	if resp.ErrorCode > 0 {
+		return resp, errors.Errorf(resp.ErrorMsg)
 	}
 
-	finalResp, _ := iresp.(EntityLevelSentimentDeleteRepoResponse)
-	return finalResp, err
+	return resp, nil
 }
 
 // 实体名单查询接口请求说明
@@ -147,15 +164,19 @@ func (m EntityLevelSentiment) Query(repository string) (EntityLevelSentimentQuer
 	var resp EntityLevelSentimentQueryResponse
 
 	body := utils.MustJson(EntityLevelSentimentQueryBody{repository})
-	logrus.Debugf("[entity_level_sentiment_list] %s", body)
+	logrus.Debugf("[entity_level_sentiment_query] %s", body)
 
-	iresp, err := utils.CommonResponse(aip.Post(entity_level_sentiment_query).Send(string(body)), resp)
-	if err != nil {
-		return resp, err
+	_, respBody, errs := aip.Post(entity_level_sentiment_query).Send(string(body)).EndStruct(&resp)
+	if len(errs) > 0 {
+		return resp, errs[0]
+	}
+	logrus.Debugf("response body: %s", respBody)
+
+	if resp.ErrorCode > 0 {
+		return resp, errors.Errorf(resp.ErrorMsg)
 	}
 
-	finalResp, _ := iresp.(EntityLevelSentimentQueryResponse)
-	return finalResp, err
+	return resp, nil
 }
 
 // 实体名单删除接口请求说明
@@ -174,13 +195,17 @@ func (m EntityLevelSentiment) Delete(repository string, entities []string) (Enti
 	var resp EntityLevelSentimentDeleteResponse
 
 	body := utils.MustJson(EntityLevelSentimentDeleteBody{repository, entities})
-	logrus.Debugf("[entity_level_sentiment_list] %s", body)
+	logrus.Debugf("[entity_level_sentiment_delete] %s", body)
 
-	iresp, err := utils.CommonResponse(aip.Post(entity_level_sentiment_delete).Send(string(body)), resp)
-	if err != nil {
-		return resp, err
+	_, respBody, errs := aip.Post(entity_level_sentiment_delete).Send(string(body)).EndStruct(&resp)
+	if len(errs) > 0 {
+		return resp, errs[0]
+	}
+	logrus.Debugf("response body: %s", respBody)
+
+	if resp.ErrorCode > 0 {
+		return resp, errors.Errorf(resp.ErrorMsg)
 	}
 
-	finalResp, _ := iresp.(EntityLevelSentimentDeleteResponse)
-	return finalResp, err
+	return resp, nil
 }

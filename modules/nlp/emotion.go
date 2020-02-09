@@ -4,6 +4,7 @@
 package nlp
 
 import (
+	"github.com/juju/errors"
 	"github.com/rogeecn/aip"
 	"github.com/rogeecn/aip/modules"
 	"github.com/rogeecn/aip/utils"
@@ -52,11 +53,15 @@ func (m Emotion) Default(text, scene string) (EmotionResponse, error) {
 	body := utils.MustJson(EmotionBody{text, scene})
 	logrus.Debugf("[emotion] %s", body)
 
-	iresp, err := utils.CommonResponse(aip.Post(emotion).Send(string(body)), resp)
-	if err != nil {
-		return resp, err
+	_, respBody, errs := aip.Post(emotion).Send(string(body)).EndStruct(&resp)
+	if len(errs) > 0 {
+		return resp, errs[0]
+	}
+	logrus.Debugf("response body: %s", respBody)
+
+	if resp.ErrorCode > 0 {
+		return resp, errors.Errorf(resp.ErrorMsg)
 	}
 
-	finalResp, _ := iresp.(EmotionResponse)
-	return finalResp, err
+	return resp, nil
 }

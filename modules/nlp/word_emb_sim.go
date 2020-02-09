@@ -4,6 +4,7 @@
 package nlp
 
 import (
+	"github.com/juju/errors"
 	"github.com/rogeecn/aip"
 	"github.com/rogeecn/aip/modules"
 	"github.com/rogeecn/aip/utils"
@@ -38,11 +39,15 @@ func (m WordEmbSim) Default(first, second string) (WordEmbSimResponse, error) {
 	body := utils.MustJson(WordEmbSimBody{first, second})
 	logrus.Debugf("[word_emb_sim] %s", body)
 
-	iresp, err := utils.CommonResponse(aip.Post(word_emb_sim).Send(string(body)), resp)
-	if err != nil {
-		return resp, err
+	_, respBody, errs := aip.Post(word_emb_sim).Send(string(body)).EndStruct(&resp)
+	if len(errs) > 0 {
+		return resp, errs[0]
+	}
+	logrus.Debugf("response body: %s", respBody)
+
+	if resp.ErrorCode > 0 {
+		return resp, errors.Errorf(resp.ErrorMsg)
 	}
 
-	finalResp, _ := iresp.(WordEmbSimResponse)
-	return finalResp, err
+	return resp, nil
 }

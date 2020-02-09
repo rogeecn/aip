@@ -4,6 +4,7 @@
 package nlp
 
 import (
+	"github.com/juju/errors"
 	"github.com/rogeecn/aip"
 	"github.com/rogeecn/aip/modules"
 	"github.com/rogeecn/aip/utils"
@@ -25,8 +26,7 @@ type TopicBody struct {
 type TopicResponse struct {
 	modules.BaseResp
 
-	LogID int64 `json:"log_id"`
-	Item  struct {
+	Item struct {
 		Lv2TagList []struct {
 			Score float64 `json:"score"`
 			Tag   string  `json:"tag"`
@@ -44,11 +44,15 @@ func (m Topic) Default(title, content string) (TopicResponse, error) {
 	body := utils.MustJson(TopicBody{title, content})
 	logrus.Debugf("[topic] %s", body)
 
-	iresp, err := utils.CommonResponse(aip.Post(topic).Send(string(body)), resp)
-	if err != nil {
-		return resp, err
+	_, respBody, errs := aip.Post(topic).Send(string(body)).EndStruct(&resp)
+	if len(errs) > 0 {
+		return resp, errs[0]
+	}
+	logrus.Debugf("response body: %s", respBody)
+
+	if resp.ErrorCode > 0 {
+		return resp, errors.Errorf(resp.ErrorMsg)
 	}
 
-	finalResp, _ := iresp.(TopicResponse)
-	return finalResp, err
+	return resp, nil
 }
