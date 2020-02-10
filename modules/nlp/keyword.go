@@ -39,7 +39,7 @@ func (m Keyword) Default(title, content string) (KeywordResponse, error) {
 	body := utils.MustJson(KeywordBody{title, content})
 	logrus.Debugf("[keyword] %s", body)
 
-	_, respBody, errs := aip.Post(address).Send(string(body)).EndStruct(&resp)
+	_, respBody, errs := aip.Post(keyword).Send(string(body)).EndStruct(&resp)
 	if len(errs) > 0 {
 		return resp, errs[0]
 	}
